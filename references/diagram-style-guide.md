@@ -52,7 +52,7 @@ Mermaid sizes boxes from the label text, and long labels overflow the box or the
 * Node label lines: at most 15 characters per `<br/>` line. Strip the extension and the folder when the file name is longer (`byte_to_sample.cpp` becomes `byte_to_sample`). The full path lives in the companion table, so nothing is lost.
 * Edge labels: name only, at most 15 characters (`pe_bytes`, not `pe_bytes: vector`). The type lives in the companion table and in `flux.json`.
 * One edge per node pair per direction in context diagrams. Two data types sharing a path share one edge (`pe_bytes, table`), with the split drawn in L1. Three edges between the same pair always stack their labels into one unreadable blob.
-* Sequence diagrams are exempt from the length cap. Their arrows run long, so full file names fit. The reviewer still eyeballs them.
+* Sequence participants use two lines: role, then file stripped to 15 chars (`Processor<br/>processor.cpp`). Single-line `Role [file]` names run 20 plus chars and poke out of the box under fallback fonts. Message labels stay short verb plus data. Arrows run long, so messages are exempt from the cap.
 
 ### Companion table
 

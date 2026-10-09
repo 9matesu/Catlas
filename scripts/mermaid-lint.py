@@ -56,6 +56,15 @@ def lint_file(path: Path) -> list[str]:
             if m:
                 key = frozenset([m.group(1), m.group(2)])
                 pairs[key] = pairs.get(key, 0) + 1
+        else:
+            m = re.search(r"participant\s+\w+\s+as\s+(.+)", s)
+            if m:
+                for part in m.group(1).split("<br/>"):
+                    if len(part.strip()) > MAX_LABEL:
+                        errors.append(
+                            f"{path}:{i}: participant line '{part.strip()}' "
+                            f"over {MAX_LABEL} chars, spills out of the box"
+                        )
     for pair, count in pairs.items():
         if count > 2:
             names = sorted(pair)

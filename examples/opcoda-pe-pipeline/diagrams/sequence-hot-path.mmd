@@ -1,10 +1,10 @@
 sequenceDiagram
-  participant U as User [plugin_editor.cpp]
-  participant P as Processor [plugin_processor.cpp]
-  participant R as Parser [pe_parser.cpp]
-  participant E as Entropy [shannon_entropy.cpp]
-  participant Q as Queues [spsc_ring.h]
-  participant A as Audio [granular_engine.cpp]
+  participant U as User<br/>editor.cpp
+  participant P as Processor<br/>processor.cpp
+  participant R as Parser<br/>pe_parser.cpp
+  participant E as Entropy<br/>shannon_entropy
+  participant Q as Queues<br/>spsc_ring.h
+  participant A as Audio<br/>granular_engine
   U->>P: drop pe_path
   P->>R: parse bytes
   R->>E: section bytes
