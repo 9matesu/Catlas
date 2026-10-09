@@ -37,6 +37,7 @@ docs/atlas/diagrams/dataflow-l1-<name>.mmd
 docs/atlas/diagrams/sequence-<name>.mmd
 docs/atlas/assets/flux.json
 docs/atlas/assets/inventory.csv
+docs/atlas/assets/checks/<name>.md
 ```
 
 If `docs/atlas/` exists, update it in place. Keep history in git. Do not create a second folder.
@@ -91,17 +92,21 @@ Style rules live in `references/diagram-style-guide.md`. Gray fill marks abstrac
 
 Start from `templates/diagram-snippets.mmd`. Do not invent a new style per diagram.
 
-## Phase 6: visual QA
+## Phase 6: confirm loop
 
-Run the checks in this order:
+Every diagram passes four gates before it ships. Record each round in `assets/checks/<name>.md` from `templates/check-record.md`. A diagram without a passing record is a draft.
 
-1. `python .opencode/skills/catlas/scripts/mermaid-lint.py`
-2. `powershell -File tools/render-mermaid.ps1 -Atlas docs/atlas`
-3. Read each rendered PNG with the read tool. Look for overlap, clipped labels, crossed edges, tiny fonts.
-4. Fix the `.mmd` source. Never fix the PNG. The `.mmd` file is the source of truth.
-5. Repeat at most 3 rounds per diagram. Then split the diagram instead.
+Pick the renderer by OS. Linux and macOS run `tools/render-mermaid.sh`. Windows runs `tools/render-mermaid.ps1`. Both call pinned `@mermaid-js/mermaid-cli@12.0.0` with `tools/mermaid-config.json`, so output is identical on every OS. Both need node 18 plus and network once for the download. Run from the repo root.
 
-If Edge is missing, keep the text lint gate and note the missing visual pass in `index.md`. Do not mark the atlas final.
+Gate A, text lint: `python scripts/mermaid-lint.py diagrams/<name>.mmd` must print ok. It fails on missing direction, oversize diagrams, unlabeled edges, labels past 15 chars, and more than 2 edges per node pair.
+
+Gate B, render freshness: rerender after every `.mmd` edit and record the source hash with `git hash-object`. A record whose hash differs from the current file is stale and fails. Stale images are the most common failure.
+
+Gate C, vision: read the render at full width. Check text outside boxes, stacked edge labels, clipped names. Shorten labels first, split the diagram second.
+
+Gate D, trace: sample edges and resolve each to `path:line` with a grep hit at both ends, plus a type match in `flux.json`. A miss anywhere fails the gate. Lint cannot catch a wrong-way edge. Only this gate does.
+
+Loop: fail at any gate, fix the `.mmd` source, restart at gate A. At most 3 rounds per diagram, then split the diagram or ask the user. Never fix the image. The `.mmd` file is the source of truth.
 
 ## Phase 7: publish
 

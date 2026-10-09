@@ -20,7 +20,7 @@ Run through the humanizer patterns §1 to §26 on the markdown pages. Flag contr
 
 ### Sign off format
 
-Per diagram: file, pass or fail, evidence. Keep it short:
+Sign the check record in `assets/checks/`, not the diagram. Recompute the source hash and fail stale records. Per diagram: file, pass or fail, evidence. Keep it short:
 
 ```text
 diagrams/dataflow-l0.mmd: pass. 9 nodes, 11 edges. 3 sampled edges resolve to src/....cpp:line.

@@ -32,6 +32,17 @@ For other agents that read `SKILL.md`, copy `SKILL.md`, `references/`, `template
 
 Vendor the renderer once. Place a pinned `mermaid.min.js` at `third_party/mermaid.min.js` or `tools/` beside the skill. The file is not shipped here. Record the version in your atlas index.
 
+## Requirements by OS
+
+The diagrams, lint, and render pipeline run the same on Linux, macOS, and Windows. Linux is the reference platform for CI.
+
+* Node 18 or newer with `npx` on PATH. Renders call pinned `@mermaid-js/mermaid-cli@12.0.0` with `tools/mermaid-config.json`, so output is byte identical across runs and machines.
+* Python 3 with stdlib only for `scripts/mermaid-lint.py`.
+* Git for `git hash-object`, which binds each check record to its diagram source.
+* Network once per machine for the mermaid-cli download and its browser. After that renders run offline.
+
+Linux and macOS render with `tools/render-mermaid.sh`. Windows renders with `tools/render-mermaid.ps1`. Make the shell script executable once: `chmod +x tools/render-mermaid.sh`.
+
 ## How a run goes
 
 Scope, recon, inventory, entries and exits, flux graph, diagrams, visual QA, publish. Detail lives in `SKILL.md`. The short form:

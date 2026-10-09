@@ -11,7 +11,12 @@ python scripts/mermaid-lint.py examples/opcoda-pe-pipeline/diagrams
 powershell -File tools/render-mermaid.ps1 -Atlas examples/opcoda-pe-pipeline
 ```
 
-Python means any Python 3 on PATH. The lint script uses stdlib only. The render script needs local Edge plus a vendored `mermaid.min.js` you provide.
+Linux and macOS:
+
+```bash
+python3 scripts/mermaid-lint.py examples/opcoda-pe-pipeline/diagrams
+tools/render-mermaid.sh examples/opcoda-pe-pipeline
+```
 
 ## Conventions
 

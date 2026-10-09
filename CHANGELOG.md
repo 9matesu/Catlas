@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.1.0 - 2026-10-09
+
+Cross OS and confirm loop. Both render scripts now call pinned mermaid-cli 12.0.0 with a shared deterministic config, so Linux, macOS, and Windows produce byte identical SVGs. Added `tools/render-mermaid.sh`, rewrote the `.ps1` around npx with the Edge path as fallback only. Added the four gate confirm loop with per diagram check records, a record template, and a worked record for the sequence diagram. Reviewer verifies record hashes instead of eyeballing diagrams.
+
 ## 1.0.2 - 2026-10-09
 
 Fixed sequence participant boxes: single-line `Role [file]` names ran 20 plus chars and poked out of the box under fallback fonts on GitHub. Participants are now two lines, role plus stripped file, 15 chars max per line. Lint checks participant lines. Style guide updated.
