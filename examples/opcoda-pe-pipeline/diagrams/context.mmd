@@ -1,0 +1,18 @@
+flowchart LR
+  direction LR
+  subgraph ext[External]
+    direction TB
+    U[User<br/>host files]
+    D[DAW host<br/>Ableton]
+  end
+  subgraph repo[Opcoda]
+    direction TB
+    P[PE parser<br/>parser.cpp]
+    E[Entropy<br/>entropy.cpp]
+    G[Grain engine<br/>engine.cpp]
+  end
+  U -->|pe_path: string| P
+  P -->|pe_bytes: vector| E
+  E -->|table: array| G
+  G -->|audio: float| D
+  P -.->|E_OOB: error| U

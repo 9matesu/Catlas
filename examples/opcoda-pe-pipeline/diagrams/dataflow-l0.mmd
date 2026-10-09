@@ -1,0 +1,8 @@
+flowchart LR
+  direction LR
+  F[PE file<br/>parser.cpp] -->|pe_bytes: vector| T[Section table<br/>parser.cpp]
+  T -->|raw_bytes: span| H[Entropy<br/>entropy.cpp]
+  H -->|grain_table: array| Q[SPSC queue<br/>rt/queue.h]
+  Q -.->|swap: pointer| A[Audio engine<br/>engine.cpp]
+  A -->|audio: float| O[Output<br/>processBlock]
+  F -.->|E_TRUNCATED: error| U[Caller<br/>plugin.cpp]

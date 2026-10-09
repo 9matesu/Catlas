@@ -1,0 +1,28 @@
+classDiagram
+  direction TB
+  class Core:::abstract {
+    <<abstract>>
+    +parse()
+    +process()
+  }
+  class PeParser:::concrete {
+    +parse(data)
+    +sections()
+  }
+  class EntropyTable:::concrete {
+    +build(bytes)
+  }
+  class GrainEngine:::concrete {
+    +processBlock(buf)
+  }
+  class SpscQueue:::concrete {
+    +push()
+    +pop()
+  }
+  Core <|-- PeParser : inherits
+  Core <|-- EntropyTable : inherits
+  Core <|-- GrainEngine : inherits
+  GrainEngine --> SpscQueue : polls
+  PeParser --> EntropyTable : feeds bytes
+  classDef abstract fill:#9AA0A6,stroke:#5F6368,color:#fff,fontStyle:italic
+  classDef concrete fill:#ffffff,stroke:#8B1A1A,stroke-width:1px,color:#202124

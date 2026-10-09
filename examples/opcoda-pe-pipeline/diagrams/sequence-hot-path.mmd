@@ -1,0 +1,13 @@
+sequenceDiagram
+  participant U as User [plugin.cpp]
+  participant P as Parser [parser.cpp]
+  participant E as Entropy [entropy.cpp]
+  participant Q as Queue [queue.h]
+  participant A as Audio [engine.cpp]
+  U->>P: open pe_path
+  P->>P: check MZ and PE
+  P->>E: pe_bytes
+  E->>Q: grain_table
+  Q-->>A: swap pointer
+  A->>U: audio buffer
+  P-->>U: E_OOB on short read

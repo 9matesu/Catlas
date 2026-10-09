@@ -1,0 +1,7 @@
+path,language,role,entry,notes
+src/opcoda_core/pe/parser.cpp,cpp,logic,no,Validates MZ and PE headers and clips sections
+src/opcoda_core/entropy/table.cpp,cpp,logic,no,Builds byte frequency table used for grain choice
+src/opcoda_core/dsp/engine.cpp,cpp,logic,no,Fixed voice granular render in processBlock
+src/opcoda_core/rt/queue.h,cpp,io,no,SPSC handoff from parser side to audio side
+src/opcoda_plugin/processor.cpp,cpp,entry,yes,VST3 entry that calls processBlock
+tools/build.ps1,powershell,config,no,Pinned build entry with vcvars handling

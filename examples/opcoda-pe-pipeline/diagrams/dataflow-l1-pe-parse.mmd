@@ -1,0 +1,8 @@
+flowchart LR
+  direction LR
+  R[Read file<br/>parser.cpp] -->|buf: vector| M[Check MZ<br/>parser.cpp]
+  M -->|e_lfanew: u32| C[Check PE<br/>parser.cpp]
+  C -->|headers: struct| S[Clip sections<br/>parser.cpp]
+  S -->|table: vector| V[Validate<br/>parser.cpp]
+  V -->|ok: bool| B[Publish bytes<br/>queue.h]
+  V -.->|E_OOB: error| E[Caller<br/>plugin.cpp]

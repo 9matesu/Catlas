@@ -1,0 +1,4 @@
+third_party/
+assets/render/
+*.png
+__pycache__/
