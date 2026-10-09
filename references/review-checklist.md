@@ -12,7 +12,7 @@ Count nodes and edges from the `.mmd` source. More than 12 nodes fails. More tha
 
 ### Alignment check
 
-Read the rendered PNG. Look for overlapping boxes, clipped text, edges that cross labels, fonts below readable size. Name the file and the overlapping pair. Suggest the split or the subgraph move. Do not edit the diagram. The diagrammer owns fixes.
+Read the rendered PNG at full width. Look for overlapping boxes, clipped text, edges that cross labels, fonts below readable size. Check three specific artifacts: text sticking out of a box, two edge labels stacked into one blob, a node name cut off at the box edge (`spsc_ring.n`). Name the file and the overlapping pair. Suggest the split or the subgraph move. Shorten the label per the style guide before splitting. Do not edit the diagram. The diagrammer owns fixes.
 
 ### Voice check
 

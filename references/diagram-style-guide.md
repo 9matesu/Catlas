@@ -45,6 +45,15 @@ No unlabeled arrows. An edge without a label failed tracing.
 
 When a diagram exceeds the limits, split by flux or by layer. Denser diagrams do not carry more information. They carry less, because nobody reads them.
 
+### Label fit
+
+Mermaid sizes boxes from the label text, and long labels overflow the box or the edge. Keep every label line short:
+
+* Node label lines: at most 15 characters per `<br/>` line. Strip the extension and the folder when the file name is longer (`byte_to_sample.cpp` becomes `byte_to_sample`). The full path lives in the companion table, so nothing is lost.
+* Edge labels: name only, at most 15 characters (`pe_bytes`, not `pe_bytes: vector`). The type lives in the companion table and in `flux.json`.
+* One edge per node pair per direction in context diagrams. Two data types sharing a path share one edge (`pe_bytes, table`), with the split drawn in L1. Three edges between the same pair always stack their labels into one unreadable blob.
+* Sequence diagrams are exempt from the length cap. Their arrows run long, so full file names fit. The reviewer still eyeballs them.
+
 ### Companion table
 
 Under each diagram, keep a table with columns `edge`, `source`, `sink`. Source and sink are `path:line`. The table is the proof. A node with no table row gets removed or traced. Reviewers check this table first.

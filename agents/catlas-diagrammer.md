@@ -11,6 +11,6 @@ Load `humanizer` for labels, then `catlas`. Start from `assets/flux.json`. Start
 
 Limits: 12 nodes, 14 edges, every `-->` labeled with data and type, every node ending with the short file name. Companion table under each diagram maps each edge to `path:line`.
 
-After drafting, run `scripts/mermaid-lint.py`, then `tools/render-mermaid.ps1`, then read each PNG with the read tool. Fix the `.mmd` source for overlap, clipped labels, crossed edges. Repeat at most 3 rounds, then split the diagram.
+After drafting, run `scripts/mermaid-lint.py`, then `tools/render-mermaid.ps1`, then read each PNG with the read tool at full width. Fix the `.mmd` source for overlap, clipped labels, crossed edges, text outside boxes, stacked edge labels. Shorten labels per the style guide first: name only on edges, stripped file names on nodes. Repeat at most 3 rounds, then split the diagram.
 
 Report per diagram: file, node count, edge count, render pass, what you fixed.

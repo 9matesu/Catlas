@@ -6,7 +6,7 @@ This folder shows Catlas output on Opcoda, a granular synth that turns PE binari
 
 ![context](assets/context.svg)
 
-Sources sit left, sinks right. The DAW host and the user files stay outside the repo boundary. Ingest in `plugin_processor.cpp` takes the path, hands bytes to the core, and swaps the result to audio. Typed errors return to the caller instead of failing silent.
+Sources sit left, sinks right. The DAW host and the user files stay outside the repo boundary. Ingest in `plugin_processor.cpp` takes the path and hands bytes plus the table to the core. Typed errors return to the caller instead of failing silent.
 
 Source: `diagrams/context.mmd`.
 

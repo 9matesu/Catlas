@@ -8,15 +8,13 @@ flowchart LR
   end
   subgraph repo[Opcoda]
     direction TB
-    I[Ingest<br/>plugin_processor.cpp]
-    C[Core<br/>pe entropy dsp rt]
+    I[Ingest<br/>processor.cpp]
+    C[Core<br/>pe dsp rt]
     V[UI grid<br/>hex_grid.cpp]
   end
-  U -->|pe_path: string| I
-  M -->|note CC: event| I
-  I -->|pe_bytes: vector| C
-  C -->|grain_table: array| I
-  I -.->|swap: pointer| C
-  C -->|audio: float| D
-  C -.->|telemetry: atomic| V
-  I -.->|E_OOB: error| U
+  U -->|pe_path| I
+  M -->|note CC| C
+  I -->|pe_bytes, table| C
+  C -->|audio| D
+  C -.->|telemetry| V
+  I -.->|E_OOB| U

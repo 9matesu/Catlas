@@ -9,6 +9,7 @@ LABEL_PAT = re.compile(r"\|[^|]+\|")
 
 MAX_NODES = 12
 MAX_EDGES = 14
+MAX_LABEL = 15
 
 
 def lint_file(path: Path) -> list[str]:
@@ -28,12 +29,40 @@ def lint_file(path: Path) -> list[str]:
         errors.append(f"{path}: {len(nodes)} nodes, limit {MAX_NODES}, split the diagram")
     if len(edges) > MAX_EDGES:
         errors.append(f"{path}: {len(edges)} edges, limit {MAX_EDGES}, split the diagram")
+    is_sequence = "sequenceDiagram" in text
+    pairs: dict[frozenset[str], int] = {}
     for i, line in enumerate(text.splitlines(), 1):
         s = line.strip()
-        if "-->" in s and "|" not in s and "sequenceDiagram" not in text:
+        if "-->" in s and "|" not in s and not is_sequence:
             errors.append(f"{path}:{i}: unlabeled --> edge")
         if "\u2014" in s or "\u2013" in s:
             errors.append(f"{path}:{i}: em or en dash in source, use comma or colon")
+        if not is_sequence:
+            for m in re.finditer(r"\|([^|]+)\|", s):
+                if len(m.group(1).strip()) > MAX_LABEL:
+                    errors.append(
+                        f"{path}:{i}: edge label '{m.group(1).strip()}' "
+                        f"over {MAX_LABEL} chars, shortens past the edge"
+                    )
+            for m in re.finditer(r"\[(.*?)\]", s):
+                for part in m.group(1).split("<br/>"):
+                    if len(part.strip()) > MAX_LABEL:
+                        errors.append(
+                            f"{path}:{i}: node line '{part.strip()}' "
+                            f"over {MAX_LABEL} chars, spills out of the box"
+                        )
+            flat = re.sub(r"\|[^|]*\|", "", s)
+            m = re.search(r"(\w+)\s*(?:-->|-.->|<\|--|\*--)\s*(\w+)", flat)
+            if m:
+                key = frozenset([m.group(1), m.group(2)])
+                pairs[key] = pairs.get(key, 0) + 1
+    for pair, count in pairs.items():
+        if count > 2:
+            names = sorted(pair)
+            errors.append(
+                f"{path}: {count} edges between {' and '.join(names)}, "
+                "labels stack into one blob, merge or move one to L1"
+            )
     if "classDiagram" in text and "classDef abstract" not in text:
         errors.append(f"{path}: classDiagram without abstract classDef, see style guide")
     return errors
