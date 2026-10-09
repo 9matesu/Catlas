@@ -45,9 +45,27 @@ Scope, recon, inventory, entries and exits, flux graph, diagrams, visual QA, pub
 
 Subagents for large repos: `catlas-writer` owns pages, `catlas-diagrammer` owns `.mmd` files, `catlas-reviewer` signs off read only. Small repos can run inline. Phases stay the same.
 
-## Example output
+## Example case: Opcoda
 
-`examples/opcoda-pe-pipeline/` holds a full pass over a PE file to grain pipeline: 5 diagrams, `flux.json`, `inventory.csv`, trace table. Open that folder first when you evaluate the style. All diagrams there pass `scripts/mermaid-lint.py`.
+Opcoda is a granular synth that turns PE binaries into sound. Pure C++20 core with no framework, JUCE only at the plugin edge. The worked pass lives in `examples/opcoda-pe-pipeline/` with 5 diagrams, `flux.json`, `inventory.csv`, and a trace table. Rendered with mermaid-cli 12.0.0.
+
+### Where data enters and leaves
+
+![Opcoda context](examples/opcoda-pe-pipeline/assets/context.svg)
+
+User files and the DAW host stay outside the boundary. Ingest takes the path, the core returns bytes, the engine swaps audio back. Short reads return `E_OOB` on the dotted edge.
+
+### How bytes become audio
+
+![Opcoda L0 data movement](examples/opcoda-pe-pipeline/assets/dataflow-l0.svg)
+
+File bytes in `pe_parser.cpp` become float samples in `byte_to_sample.cpp`, feed entropy in `shannon_entropy.cpp`, cross the dual queue in `spsc_ring.h`, render in `granular_engine.cpp`, pass the DC blocker and limiter, and reach the host. One edge per data type, sources left, sinks right.
+
+### The call order when debugging
+
+![Opcoda hot path](examples/opcoda-pe-pipeline/assets/sequence-hot-path.svg)
+
+Drop a file, ingest, parse, entropy, queue swap, render, audio back. Full set with containers and L1 PE parse detail in the example folder.
 
 ## Voice
 

@@ -1,8 +1,8 @@
 flowchart LR
   direction LR
-  R[Read file<br/>parser.cpp] -->|buf: vector| M[Check MZ<br/>parser.cpp]
-  M -->|e_lfanew: u32| C[Check PE<br/>parser.cpp]
-  C -->|headers: struct| S[Clip sections<br/>parser.cpp]
-  S -->|table: vector| V[Validate<br/>parser.cpp]
-  V -->|ok: bool| B[Publish bytes<br/>queue.h]
-  V -.->|E_OOB: error| E[Caller<br/>plugin.cpp]
+  R[Read file<br/>pe_parser.cpp] -->|buf: vector| M[Check MZ<br/>pe_parser.cpp]
+  M -->|e_lfanew: u32| C[Check PE<br/>pe_parser.cpp]
+  C -->|coff: header| S[Clip raw size<br/>pe_parser.cpp]
+  S -->|table: sections| V[Cap count 96<br/>pe_parser.cpp]
+  V -->|ok: bool| B[Publish bytes<br/>spsc_ring.h]
+  V -.->|E_OOB: error| E[Caller<br/>plugin_processor.cpp]

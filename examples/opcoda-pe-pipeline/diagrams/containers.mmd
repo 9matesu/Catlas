@@ -9,20 +9,23 @@ classDiagram
     +parse(data)
     +sections()
   }
-  class EntropyTable:::concrete {
-    +build(bytes)
+  class ByteToSample:::concrete {
+    +toSamples(bytes)
+  }
+  class ShannonEntropy:::concrete {
+    +bits(data, off, len)
   }
   class GrainEngine:::concrete {
     +processBlock(buf)
   }
-  class SpscQueue:::concrete {
+  class SpscRing:::concrete {
     +push()
     +pop()
   }
   Core <|-- PeParser : inherits
-  Core <|-- EntropyTable : inherits
+  Core <|-- ShannonEntropy : inherits
   Core <|-- GrainEngine : inherits
-  GrainEngine --> SpscQueue : polls
-  PeParser --> EntropyTable : feeds bytes
+  PeParser --> ByteToSample : feeds bytes
+  GrainEngine --> SpscRing : polls
   classDef abstract fill:#9AA0A6,stroke:#5F6368,color:#fff,fontStyle:italic
   classDef concrete fill:#ffffff,stroke:#8B1A1A,stroke-width:1px,color:#202124

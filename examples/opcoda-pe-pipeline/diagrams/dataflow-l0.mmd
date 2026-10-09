@@ -1,8 +1,10 @@
 flowchart LR
   direction LR
-  F[PE file<br/>parser.cpp] -->|pe_bytes: vector| T[Section table<br/>parser.cpp]
-  T -->|raw_bytes: span| H[Entropy<br/>entropy.cpp]
-  H -->|grain_table: array| Q[SPSC queue<br/>rt/queue.h]
-  Q -.->|swap: pointer| A[Audio engine<br/>engine.cpp]
-  A -->|audio: float| O[Output<br/>processBlock]
-  F -.->|E_TRUNCATED: error| U[Caller<br/>plugin.cpp]
+  F[PE file<br/>pe_parser.cpp] -->|pe_bytes: vector| T[toSamples<br/>byte_to_sample.cpp]
+  T -->|samples: float| H[Entropy<br/>shannon_entropy.cpp]
+  H -->|grain_table: array| Q[Dual queue<br/>spsc_ring.h]
+  Q -.->|swap: pointer| A[Grain engine<br/>granular_engine.cpp]
+  A -->|raw: float| B[DC blocker<br/>dc_blocker.cpp]
+  B -->|clean: float| L[Limiter<br/>limiter.cpp]
+  L -->|audio: float| O[Host out<br/>plugin_processor.cpp]
+  F -.->|E_OOB: error| U[Caller<br/>plugin_processor.cpp]

@@ -1,7 +1,14 @@
 path,language,role,entry,notes
-src/opcoda_core/pe/parser.cpp,cpp,logic,no,Validates MZ and PE headers and clips sections
-src/opcoda_core/entropy/table.cpp,cpp,logic,no,Builds byte frequency table used for grain choice
-src/opcoda_core/dsp/engine.cpp,cpp,logic,no,Fixed voice granular render in processBlock
-src/opcoda_core/rt/queue.h,cpp,io,no,SPSC handoff from parser side to audio side
-src/opcoda_plugin/processor.cpp,cpp,entry,yes,VST3 entry that calls processBlock
+src/opcoda_core/pe/pe_parser.cpp,cpp,logic,no,Validates MZ and PE headers and clips sections
+src/opcoda_core/pe/byte_to_sample.cpp,cpp,logic,no,Maps bytes to float samples in [-1 1]
+src/opcoda_core/pe/byte_to_position.cpp,cpp,logic,no,Maps grid address to POSITION fraction
+src/opcoda_core/entropy/shannon_entropy.cpp,cpp,logic,no,Byte frequency entropy per section
+src/opcoda_core/dsp/granular_engine.cpp,cpp,logic,no,Eight voice overlap add render
+src/opcoda_core/dsp/dc_blocker.cpp,cpp,logic,no,High pass R 0.9983 at 12 Hz
+src/opcoda_core/dsp/limiter.cpp,cpp,logic,no,Asymmetric smooth gain plus final clamp
+src/opcoda_core/rt/spsc_ring.h,cpp,io,no,Dual queue handoff between UI and audio
+src/opcoda_core/rt/note_tracker.cpp,cpp,logic,no,Keys plus pedal state without JUCE
+src/opcoda_plugin/source/plugin_processor.cpp,cpp,entry,yes,VST3 ingest processBlock and state
+src/opcoda_plugin/source/plugin_editor.cpp,cpp,entry,yes,Three lane layout with hex grid
+src/opcoda_plugin/source/hex_grid.cpp,cpp,io,no,Byte grid with click to POSITION
 tools/build.ps1,powershell,config,no,Pinned build entry with vcvars handling

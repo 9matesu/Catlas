@@ -2,17 +2,21 @@ flowchart LR
   direction LR
   subgraph ext[External]
     direction TB
-    U[User<br/>host files]
+    U[User files<br/>exe dll]
     D[DAW host<br/>Ableton]
+    M[MIDI keys<br/>CC74 CC71]
   end
   subgraph repo[Opcoda]
     direction TB
-    P[PE parser<br/>parser.cpp]
-    E[Entropy<br/>entropy.cpp]
-    G[Grain engine<br/>engine.cpp]
+    I[Ingest<br/>plugin_processor.cpp]
+    C[Core<br/>pe entropy dsp rt]
+    V[UI grid<br/>hex_grid.cpp]
   end
-  U -->|pe_path: string| P
-  P -->|pe_bytes: vector| E
-  E -->|table: array| G
-  G -->|audio: float| D
-  P -.->|E_OOB: error| U
+  U -->|pe_path: string| I
+  M -->|note CC: event| I
+  I -->|pe_bytes: vector| C
+  C -->|grain_table: array| I
+  I -.->|swap: pointer| C
+  C -->|audio: float| D
+  C -.->|telemetry: atomic| V
+  I -.->|E_OOB: error| U
