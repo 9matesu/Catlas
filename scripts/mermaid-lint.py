@@ -16,6 +16,7 @@ def lint_file(path: Path) -> list[str]:
     text = path.read_text(encoding="utf-8", errors="replace")
     errors: list[str] = []
     is_sequence = "sequenceDiagram" in text
+    is_class = "classDiagram" in text
     if "direction " not in text and not is_sequence:
         errors.append(f"{path}: missing direction line")
     nodes: set[str] = set()
@@ -33,7 +34,7 @@ def lint_file(path: Path) -> list[str]:
     pairs: dict[frozenset[str], int] = {}
     for i, line in enumerate(text.splitlines(), 1):
         s = line.strip()
-        if "-->" in s and "|" not in s and not is_sequence:
+        if "-->" in s and "|" not in s and not is_sequence and not is_class:
             errors.append(f"{path}:{i}: unlabeled --> edge")
         if "\u2014" in s or "\u2013" in s:
             errors.append(f"{path}:{i}: em or en dash in source, use comma or colon")

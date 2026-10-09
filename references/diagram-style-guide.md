@@ -30,7 +30,7 @@ Keep four edge types:
 
 * `<|--` for inheritance. Vertical only.
 * `*--` for composition. Use sparingly.
-* `-->` with a label for data movement. The label names the data and the type, for example `pe_bytes: vector<uint8_t>`.
+* `-->` with a label for data movement. In flowcharts the label sits in pipes (`-->|pe_bytes|`). In classDiagram the label follows a colon (`--> B : feeds bytes`), because pipes do not parse there.
 * `-.->` for async, queued, or callback paths. Add `queue` or `callback` to the label.
 
 No unlabeled arrows. An edge without a label failed tracing.
