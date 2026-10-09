@@ -15,7 +15,8 @@ MAX_LABEL = 15
 def lint_file(path: Path) -> list[str]:
     text = path.read_text(encoding="utf-8", errors="replace")
     errors: list[str] = []
-    if "direction " not in text:
+    is_sequence = "sequenceDiagram" in text
+    if "direction " not in text and not is_sequence:
         errors.append(f"{path}: missing direction line")
     nodes: set[str] = set()
     for m in re.finditer(r"class\s+(\w+)", text):
@@ -29,7 +30,6 @@ def lint_file(path: Path) -> list[str]:
         errors.append(f"{path}: {len(nodes)} nodes, limit {MAX_NODES}, split the diagram")
     if len(edges) > MAX_EDGES:
         errors.append(f"{path}: {len(edges)} edges, limit {MAX_EDGES}, split the diagram")
-    is_sequence = "sequenceDiagram" in text
     pairs: dict[frozenset[str], int] = {}
     for i, line in enumerate(text.splitlines(), 1):
         s = line.strip()
